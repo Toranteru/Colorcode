@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holocode</title>
+  <link rel="stylesheet" href="./public/css/document.css">
+  <link rel="stylesheet" href="./public/css/view.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&display=swap">
+</head>
+<body>
+  <input id="file-upload" type="file" multiple> <!-- TODO: Refactor into a sidebar -->
+  <div id="sidebar" class="flex center">
+    <div id="lyric-container">
+      <div class="tabs flex">
+        <div class="lyric-tab active" id="Lyrics">Lyrics</div>
+        <div class="lyric-tab" id="Romanization">Romanization</div>
+        <div class="lyric-tab" id="Translation">Translation</div>
+      </div>
+      <textarea id="lyric-upload"></textarea>
+    </div>
+  </div>
+  <script src="./public/js/lyrics.js"></script>
+  <script src="./public/js/controls.js"></script>
+</body>
+</html>

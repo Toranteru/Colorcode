@@ -1,0 +1,52 @@
+#sidebar {
+  position: absolute;
+  right: 0;
+
+  background-color: #DDD1D2;
+
+  width: 300px;
+  height: 100vh;
+}
+
+#file-upload {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+#lyric-container {
+  width: inherit;
+  height: inherit;
+  margin: 10px;
+}
+
+#lyric-upload {
+  width: 92%;
+  height: 70%;
+  padding: 10px;
+  border-radius: 0 0 4px 4px;
+
+  resize: none;
+}
+
+.tabs {
+  background-color: rgb(230, 230, 230);
+  border: 1px solid black;
+  border-radius: 4px 4px 0 0;
+  border-bottom: 0;
+  margin-top: 10px;
+  overflow: hidden;
+  gap: 2px;
+  text-align: left;
+}
+
+.lyric-tab {
+  font-size: 14px;
+  background-color: white;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.active {
+  background-color: rgb(235, 235, 235);
+}
