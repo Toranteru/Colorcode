@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holocode</title>
+  <link href="./public/css/style.css" rel="stylesheet">
+  <link href="./public/css/view.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto&family=Source+Sans+Pro&family=Spartan&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/4e130a79b6.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="view-container">
+      <div id="image-view" class="flex center">
+        <div id="image-container" class="flex"></div>
+      </div>
+      <div id="view-divider"></div>
+      <div id="text-view" class="flex center"></div>
+    </div>
+    <div id="config" class="flex">
+      <input id="view-divider-slider" type="range" min="45" max="65" value="50" class="slider">
+      <input id="member-upload" type="file" multiple>
+    </div>
+  </div>
+  <script src="./public/js/holocode.js"></script>
+  <script src="./public/js/events.js"></script>
+</body>
+</html>
