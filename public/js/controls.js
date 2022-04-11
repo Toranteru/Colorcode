@@ -7,11 +7,12 @@ window.addEventListener('keypress', (e) => {
       break;
     case 'P':
       // Toggle video player
+      if (!video_player.src) break;
       if (video_player.paused || video_player.ended) {
         video_player.play();
         intervalID = setInterval(() => {
-          updateProgress();
-        }, 1000);
+          update();
+        }, timing_interval);
       } else {
         video_player.pause();
         clearInterval(intervalID);
@@ -19,6 +20,9 @@ window.addEventListener('keypress', (e) => {
       break;
     case 'R':
       video_player.currentTime = 0;
+      slider.value = 0;
+      lyricIndex = 0;
+      update();
       break;
     case 'T':
       // Toggle timing UI
@@ -33,6 +37,16 @@ window.addEventListener('keypress', (e) => {
       }
       // Refresh lyrics when toggled
       retrieveLyrics(tab);
+      break;
+    case ' ':
+      if (!video_player.src) break;
+      let element = document.getElementById(timingIndex);
+      let timeValue = video_player.currentTime.toFixed(2);
+      element.value = timeValue;
+      timingArray[timingIndex] = timeValue;
+      window.localStorage.setItem('timingArray', JSON.stringify(timingArray));
+      timingIndex++;
+      window.localStorage.setItem('timingIndex', timingIndex);
       break;
     default:
       break;

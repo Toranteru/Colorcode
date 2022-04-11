@@ -20,6 +20,19 @@ let tab = window.localStorage.getItem('activeTab');
 let slider;
 let intervalID;
 
+let lyricIndex = 0;
+let lyrics_memory = {};
+let timing_interval = 500;
+
+// Retrieve timing value and current timing index from local storage
+let timingIndex = window.localStorage.getItem('timingIndex') || 0;
+let timingArray;
+if (!window.localStorage.getItem('timingArray')) {
+  timingArray = [];
+} else {
+  timingArray = Array.from(JSON.parse(window.localStorage.getItem('timingArray')));
+}
+
 // Initialization function on page render
 function init() {
   disableTabs();
@@ -48,20 +61,25 @@ function disableTabs() {
 function retrieveLyrics(tab) {
   lyric_upload.value = '';
   timing_container.innerHTML = '';
+  let index = 0;
   if (!(window.localStorage.getItem(tab))) return;
   let current_lyrics = Array.from(JSON.parse(window.localStorage.getItem(tab)));
   current_lyrics.forEach(lyric_line => {
     lyric_upload.value += lyric_line + '\n';
     let lyric_timing_value = document.createElement('input');
     lyric_timing_value.setAttribute('min', 0);
+    lyric_timing_value.setAttribute('step', .01);
     lyric_timing_value.type = 'number';
     lyric_timing_value.style.width = '40px';
     lyric_timing_value.style.height = '16px';
+    lyric_timing_value.id = index;
     let lyric_timing_container = document.createElement('div');
     let lyric_timing_line = document.createTextNode(lyric_line);
     lyric_timing_container.appendChild(lyric_timing_value);
+    lyric_timing_value.value = timingArray[index] || 0;
     lyric_timing_container.appendChild(lyric_timing_line);
     timing_container.appendChild(lyric_timing_container);
+    index++;
   });
 }
 

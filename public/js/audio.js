@@ -7,14 +7,19 @@ file_upload.addEventListener('change', () => {
   video_player.volume = 0.2;
   video_player.play();
   intervalID = setInterval(() => {
-    updateProgress();
-  }, 1000);
+    update();
+  }, timing_interval);
 });
 
 video_player.addEventListener('loadedmetadata', function() {
   initializeProgress();
   initializeHeight();
 });
+
+function update() {
+  updateProgress();
+  updateLyrics();
+}
 
 function initializeProgress() {
   // If a slider has not been created, set the element.
@@ -28,6 +33,8 @@ function initializeProgress() {
 
   slider.addEventListener('input', () => {
     video_player.currentTime = slider.value;
+    updateIndex(0);
+    update();
   });
   video_container.appendChild(slider);
 }
@@ -39,11 +46,24 @@ function initializeHeight() {
   lyrics_container.style.height = `${window.innerHeight - height}px`;
 }
 
-function updateLyrics(tab, element) {
-  if (window.localStorage.getItem(tab)) {
-    let lyrics = Array.from(JSON.parse(window.localStorage.getItem(tab)));
-    document.getElementById(element).textContent = lyrics[0];
+function updateLyrics() {
+  let lyric_categories = ['Lyrics', 'Romanization', 'Translation'];
+  lyric_categories.forEach(category => {
+    let storage = window.localStorage.getItem(category);
+    if (storage) {
+      let lyrics = Array.from(JSON.parse(storage));
+      document.getElementById('video-' + category.toLowerCase()).innerText = lyrics[lyricIndex];
+    }
+  })
+  updateIndex(lyricIndex);
+}
+
+function updateIndex(startingIndex) {
+  let index = startingIndex;
+  while (index + 1 < timingArray.length && timingArray[index + 1] <= video_player.currentTime) {
+    index++;
   }
+  lyricIndex = index;
 }
 
 function updateProgress() {
