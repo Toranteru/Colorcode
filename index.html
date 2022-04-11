@@ -11,17 +11,31 @@
 </head>
 <body>
   <input id="file-upload" type="file" multiple> <!-- TODO: Refactor into a sidebar -->
-  <div id="sidebar" class="flex center">
-    <div id="lyric-container">
-      <div class="tabs flex">
-        <div class="lyric-tab active" id="Lyrics">Lyrics</div>
-        <div class="lyric-tab" id="Romanization">Romanization</div>
-        <div class="lyric-tab" id="Translation">Translation</div>
+  <div id="mainframe" class="flex">
+    <div id="image-view">
+      <div id="video-container">
+        <video id="video-player" preload="metadata"></video>
       </div>
-      <textarea id="lyric-upload"></textarea>
+      <div id="lyrics-container" class="flex column center">
+        <div id="video-lyrics"></div>
+        <div id="video-romanization"></div>
+        <div id="video-translation"></div>
+      </div>
+    </div>
+    <div id="sidebar" class="flex center">
+      <div id="lyric-container" class="flex column center">
+        <div class="tabs flex">
+          <div class="lyric-tab active" id="Lyrics">Lyrics</div>
+          <div class="lyric-tab" id="Romanization">Romanization</div>
+          <div class="lyric-tab" id="Translation">Translation</div>
+        </div>
+        <textarea id="lyric-upload"></textarea>
+      </div>
+      <div id="timing-container" class="flex column hidden"></div>
     </div>
   </div>
-  <script src="./public/js/lyrics.js"></script>
-  <script src="./public/js/controls.js"></script>
+  <script defer src="./public/js/lyrics.js"></script>
+  <script defer src="./public/js/audio.js"></script>
+  <script defer src="./public/js/controls.js"></script>
 </body>
 </html>
