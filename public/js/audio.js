@@ -48,6 +48,7 @@ function initializeHeight() {
 
 function updateLyrics() {
   let lyric_categories = ['Lyrics', 'Romanization', 'Translation'];
+  updateIndex(lyricIndex);
   lyric_categories.forEach(category => {
     let storage = window.localStorage.getItem(category);
     if (storage) {
@@ -55,7 +56,6 @@ function updateLyrics() {
       document.getElementById('video-' + category.toLowerCase()).innerText = lyrics[lyricIndex];
     }
   })
-  updateIndex(lyricIndex);
 }
 
 function updateIndex(startingIndex) {
