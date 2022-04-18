@@ -1,0 +1,51 @@
+.sidebar {
+  height: 100%;
+  width: 375px;
+  background-color: #C7B4B5;
+
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+.sidebar-container {
+  height: 98%;
+  width: 100%;
+  margin: 10px;
+  background-color: #DDD1D2;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  background-color: #888888;
+  gap: 2px;
+  padding: 2px;
+  overflow-x: auto;
+
+  border-bottom: 8px solid #C7B4B5;
+}
+
+.sidebar-content {
+  height: calc(100% - 50px);
+}
+
+.menu-tab {
+  font-size: 13px;
+  background-color: white;
+  padding: 10px;
+
+  user-select: none;
+  transition: all .2s ease-in-out;
+}
+
+.menu-tab:hover {
+  background-color: #F0F0F0;
+}
+
+.active {
+  background-color: #E1E1E1;
+}
+
+.assets-label {
+  font-weight: 600;
+}
