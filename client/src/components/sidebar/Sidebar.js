@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from 'react';
+
+import { disableTabs, activateTab } from '../../helpers/TabControls';
 import './Sidebar.css';
 
 import Assets from '../Assets/Assets';
 import Translations from '../Translations/Translations';
+import Presets from '../Presets/Presets';
 
 let menu_tabs = document.getElementsByClassName('menu-tab');
-
-function activateTab(tab) {
-  document.getElementById(tab).classList.add('active');
-}
-
-// Iterate through each tab and deactivate them
-function disableTabs(tabs) {
-  for (let i = 0; i < tabs.length; i++) {
-    tabs[i].classList.remove('active');
-  }
-}
 
 function generateMenuContent(menuTab) {
   switch (menuTab) {
@@ -26,6 +18,10 @@ function generateMenuContent(menuTab) {
     case 'Translations':
       return (
         <Translations />
+      );
+    case 'Presets':
+      return (
+        <Presets />
       );
     default:
       return (
@@ -53,9 +49,9 @@ export default function Sidebar() {
     <div className='sidebar flex center'>
       <div className='sidebar-container'>
         <div className='sidebar-header flex'>
-          <p id='Assets' className='menu-tab pointer' onClick={(e) => setActiveMenuTab('Assets')}>Assets</p>
-          <p id='Translations' className='menu-tab pointer' onClick={(e) => setActiveMenuTab('Translations')}>Translations</p>
-          <p id='Presets' className='menu-tab pointer' onClick={(e) => setActiveMenuTab('Presets')}>Presets</p>
+          <p id='Assets' className='menu-tab pointer' onClick={() => setActiveMenuTab('Assets')}>Assets</p>
+          <p id='Translations' className='menu-tab pointer' onClick={() => setActiveMenuTab('Translations')}>Translations</p>
+          <p id='Presets' className='menu-tab pointer' onClick={() => setActiveMenuTab('Presets')}>Presets</p>
         </div>
         <div className='sidebar-content flex center'>
           {generateMenuContent(activeMenuTab)}

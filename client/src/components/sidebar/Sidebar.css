@@ -1,6 +1,6 @@
 .sidebar {
   height: 100%;
-  width: 375px;
+  width: 300px;
   background-color: #C7B4B5;
 
   position: absolute;
@@ -17,7 +17,6 @@
 }
 
 .sidebar-header {
-  background-color: #888888;
   gap: 2px;
   padding: 2px;
   overflow-x: auto;
@@ -26,6 +25,7 @@
 }
 
 .sidebar-content {
+  position: relative;
   height: calc(100% - 50px);
 }
 
@@ -39,11 +39,7 @@
 }
 
 .menu-tab:hover {
-  background-color: #F0F0F0;
-}
-
-.active {
-  background-color: #E1E1E1;
+  background-color: #FCF4EC;
 }
 
 .assets-label {
