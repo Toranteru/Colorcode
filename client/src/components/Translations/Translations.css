@@ -1,0 +1,43 @@
+textarea {
+  width: inherit;
+  height: inherit;
+  resize: none;
+  outline: none;
+  border: 1px solid #DDD1D2;
+
+  padding: 10px;
+  font-size: 13px;
+}
+
+.sub-sidebar-content {
+  height: calc(100% - 35px);
+  width: 98%;
+  margin-top: 42px;
+  overflow: hidden;
+}
+
+.sub-sidebar-header {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+  width: 100%;
+  gap: 2px;
+  padding: 2px;
+  overflow-x: auto;
+
+  border-bottom: 8px solid #C7B4B5;
+}
+
+.sub-menu-tab {
+  font-size: 13px;
+  background-color: white;
+  padding: 6px 8px;
+
+  user-select: none;
+  transition: all .2s ease-in-out;
+}
+
+.sub-menu-tab:hover {
+  background-color: #FCF4EC;
+}
