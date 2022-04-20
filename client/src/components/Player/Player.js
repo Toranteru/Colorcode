@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+
+import { toggleVideo } from '../../helpers/AudioControls';
 import './Player.css';
 
-function init() {
-  initializeProgress();
-}
+let video, slider;
 
 function initializeProgress() {
-  let video = document.getElementById('video-player');
-  let slider = document.getElementById('video-slider');
   if (!slider || !video) return;
   slider.setAttribute('max', Math.round(video.duration));
 }
@@ -17,13 +15,18 @@ export default function Player() {
   const { file } = useSelector(state => state.videoSlice);
 
   useEffect(() => {
-    let element = document.getElementById('video-player');
-    if (!element || !file) return;
+    video = document.getElementById('video-player');
+    slider = document.getElementById('video-slider');
+    if (!video || !file) return;
 
-    element.src = URL.createObjectURL(file);
-    element.volume = 0.2;
-    element.play();
-    element.addEventListener('loadedmetadata', init);
+    video.src = URL.createObjectURL(file);
+    video.volume = 0.2;
+    video.addEventListener('loadedmetadata', initializeProgress);
+
+    // Cleanup function
+    return () => {
+      video.removeEventListener('loadedmetadata', initializeProgress);
+    }
   }, [file]);
 
   return (
@@ -33,12 +36,11 @@ export default function Player() {
       <>
         <div className='audio-controls'>
           <input id='video-slider' className='slider' type='range' min='0' defaultValue='0' onInput={(e) => {
-              let video = document.getElementById('video-player');
-              if (!video) return;
-              video.currentTime = e.target.value;
+            if (!video) return;
+            video.currentTime = e.target.value;
           }}></input>
+          <i id='video-button' className="fa-solid fa-play fa-width fa-xl pointer" onClick={() => toggleVideo(video)}></i>
           <input id='volume-slider' className='slider' type='range' min='0' max='100' defaultValue='20' onInput={(e) => {
-            let video = document.getElementById('video-player');
             if (!video) return;
             video.volume = e.target.value / 100;
           }}></input>

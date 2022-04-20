@@ -1,4 +1,6 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import './Edit.css';
 
 export default function Edit(props) {
@@ -6,9 +8,11 @@ export default function Edit(props) {
 
   function generateEditConfiguration() {
     if (!translations) return;
-    let options = translations.split('\n').map((translation, index) => {
+    let options = translations.split('\n').map(translation => {
       return (
-        <div key={`option-${index}`} className='option'>{translation}</div>
+        <div key={uuidv4()} className='option'>
+          {translation}
+        </div>
       );
     })
     return (

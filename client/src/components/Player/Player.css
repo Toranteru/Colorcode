@@ -1,9 +1,19 @@
 #video-player {
   width: 100%;
+  margin-bottom: 64px;
 }
 
 #video-slider {
   width: 100%;
+}
+
+#video-button {
+  color: #7C5B5B;
+  transition: all .15s ease-in;
+}
+
+#video-button:hover {
+  color: #A18384;
 }
 
 #volume-slider {
@@ -39,14 +49,14 @@
   border-radius: 0;
 
   position: relative;
-  top: -12px;
+  top: -14px;
 }
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 14px;
-  width: 14px;
+  height: 16px;
+  width: 16px;
   border-radius: 100%;
-  box-shadow: inset 0 0 4px #6B2F30;
+  box-shadow: inset 0 0 3px #7C5B5B;
   background: #FFFFFF;
 }
