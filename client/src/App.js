@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import Sidebar from './components/sidebar/Sidebar';
+import Sidebar from './components/Sidebar/Sidebar';
 import Player from './components/Player/Player';
 
 function App() {
