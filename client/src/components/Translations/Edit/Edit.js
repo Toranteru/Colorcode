@@ -6,9 +6,9 @@ export default function Edit(props) {
 
   function generateEditConfiguration() {
     if (!translations) return;
-    let options = translations.split('\n').map(translation => {
+    let options = translations.split('\n').map((translation, index) => {
       return (
-        <div className='option'>{translation}</div>
+        <div key={`option-${index}`} className='option'>{translation}</div>
       );
     })
     return (

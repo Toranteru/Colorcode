@@ -8,6 +8,8 @@
 
 html, body {
   height: 100%;
+  overflow: hidden;
+  background-color: #B49999;
 }
 
 input[type=number] {
@@ -18,6 +20,11 @@ input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   appearance: none;
   margin: 0; 
+}
+
+.App {
+  height: inherit;
+  width: inherit;
 }
 
 /* Custom scrollbar */
