@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { toggleVideo, updateTracks } from '../../helpers/AudioControls';
+import { toggleVideo } from '../../helpers/AudioControls';
 import './Player.css';
 
 let video, slider;
@@ -9,15 +9,13 @@ let video, slider;
 function initializeProgress() {
   if (!slider || !video) return;
   slider.setAttribute('max', Math.round(video.duration));
-  
-  let track = video.addTextTrack("captions", "Captions", "en");
-  track.mode = 'showing';
-  // Handle adding in the video cues
-  updateTracks();
 }
 
 export default function Player() {
   const { file } = useSelector(state => state.videoSlice);
+  const [index, setIndex] = useState(-1);
+
+  let localTranslation = window.localStorage.getItem('Translations').split('\n');
 
   useEffect(() => {
     video = document.getElementById('video-player');
@@ -34,10 +32,23 @@ export default function Player() {
     }
   }, [file]);
 
+  useEffect(() => {
+    let subtitle = document.getElementById('subtitle');
+
+    // Index has not updated yet, ignore initial render
+    if (index === -1) {
+      subtitle.textContent = 'No video has been loaded yet.';
+      return;
+    }
+
+    subtitle.textContent = localTranslation[index];
+  }, [index])
+
   return (
     <div className='video-container flex center'>
       <div className='video-subcontainer'>
         <video id='video-player'></video>
+        <p id='subtitle' className='lyric-container'></p>
       </div>
       {file && 
       <>
@@ -46,7 +57,7 @@ export default function Player() {
             if (!video) return;
             video.currentTime = e.target.value;
           }}></input>
-          <i id='video-button' className="fa-solid fa-play fa-width fa-xl pointer" onClick={() => toggleVideo(video)}></i>
+          <i id='video-button' className="fa-solid fa-play fa-width fa-xl pointer" onClick={() => toggleVideo(video, setIndex)}></i>
           <input id='volume-slider' className='slider' type='range' min='0' max='100' defaultValue={window.localStorage.getItem('Volume') || '20'} onInput={(e) => {
             if (!video) return;
             video.volume = e.target.value / 100;

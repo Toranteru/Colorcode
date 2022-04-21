@@ -1,32 +1,15 @@
 let intervalID;
 let timingInterval = 300;
 
-export function update(video) {
+export function update(video, setIndex) {
   updateProgress(video);
+  updateIndex(video, setIndex);
 }
 
-export function updateTracks() {
-  let video = document.getElementById('video-player');
-  let track = video.textTracks[0];
-  if (!video || !track) return;
-
-  let textCues = JSON.parse(window.localStorage.getItem('Text Cues'));
-  
-  // When there is a timing change, strip all text cues and replace them with new ones
-  let localCues = Array.from(track.cues);
-  localCues.forEach(cue => track.removeCue(cue));
-
-  for (var lyric in textCues) {
-    let textCueProperties = textCues[lyric];
-    if (!textCueProperties.startIndex || !textCueProperties.endIndex) continue;
-    track.addCue(new VTTCue(textCueProperties.startIndex, textCueProperties.endIndex, lyric));
-  }
-}
-
-export function toggleVideo(video) {
+export function toggleVideo(video, setIndex) {
   let button = document.getElementById('video-button');
   if (!video || !button) return;
-  
+
   toggleButton(button);
 
   if (button.classList.contains('fa-play')) {
@@ -34,9 +17,18 @@ export function toggleVideo(video) {
   } else {
     video.play();
     intervalID = setInterval(() => {
-      update(video);
+      update(video, setIndex);
     }, timingInterval);
   }
+}
+
+function updateIndex(video, setIndex) {
+  let index = -1;
+  let textCues = Array.from(JSON.parse(window.localStorage.getItem('Text Cues') || '[]'));
+
+  // Make sure the index is not out of bounds
+  while (index + 1 < textCues.length && textCues[index + 1].beginIndex && video.currentTime >= textCues[index + 1].beginIndex) index++;
+  setIndex(index);
 }
 
 function updateProgress(video) {
