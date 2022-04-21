@@ -1,6 +1,5 @@
-video::-webkit-media-text-track-display {
-  font-size: 70%;
-  padding: 4px;
+::cue {
+  font-size: 24px;
 }
 
 #video-player {

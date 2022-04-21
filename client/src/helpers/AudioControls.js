@@ -1,5 +1,5 @@
 let intervalID;
-let timingInterval = 500;
+let timingInterval = 300;
 
 export function update(video) {
   updateProgress(video);
@@ -12,6 +12,10 @@ export function updateTracks() {
 
   let textCues = JSON.parse(window.localStorage.getItem('Text Cues'));
   
+  // When there is a timing change, strip all text cues and replace them with new ones
+  let localCues = Array.from(track.cues);
+  localCues.forEach(cue => track.removeCue(cue));
+
   for (var lyric in textCues) {
     let textCueProperties = textCues[lyric];
     if (!textCueProperties.startIndex || !textCueProperties.endIndex) continue;
