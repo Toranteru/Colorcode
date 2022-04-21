@@ -1,8 +1,38 @@
 let intervalID;
-let timingInterval = 200;
+let timingInterval = 500;
 
-function update(video) {
+export function update(video) {
   updateProgress(video);
+}
+
+export function updateTracks() {
+  let video = document.getElementById('video-player');
+  let track = video.textTracks[0];
+  if (!video || !track) return;
+
+  let textCues = JSON.parse(window.localStorage.getItem('Text Cues'));
+  
+  for (var lyric in textCues) {
+    let textCueProperties = textCues[lyric];
+    if (!textCueProperties.startIndex || !textCueProperties.endIndex) continue;
+    track.addCue(new VTTCue(textCueProperties.startIndex, textCueProperties.endIndex, lyric));
+  }
+}
+
+export function toggleVideo(video) {
+  let button = document.getElementById('video-button');
+  if (!video || !button) return;
+  
+  toggleButton(button);
+
+  if (button.classList.contains('fa-play')) {
+    video.pause();
+  } else {
+    video.play();
+    intervalID = setInterval(() => {
+      update(video);
+    }, timingInterval);
+  }
 }
 
 function updateProgress(video) {
@@ -21,20 +51,4 @@ function updateProgress(video) {
 function toggleButton(button) {
   button.classList.toggle('fa-play');
   button.classList.toggle('fa-pause');
-}
-
-export function toggleVideo(video) {
-  let button = document.getElementById('video-button');
-  if (!video || !button) return;
-  
-  toggleButton(button);
-
-  if (button.classList.contains('fa-play')) {
-    video.pause();
-  } else {
-    video.play();
-    intervalID = setInterval(() => {
-      update(video);
-    }, timingInterval);
-  }
 }

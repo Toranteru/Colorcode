@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { toggleVideo } from '../../helpers/AudioControls';
+import { toggleVideo, updateTracks } from '../../helpers/AudioControls';
 import './Player.css';
 
 let video, slider;
@@ -9,6 +9,11 @@ let video, slider;
 function initializeProgress() {
   if (!slider || !video) return;
   slider.setAttribute('max', Math.round(video.duration));
+  
+  let track = video.addTextTrack("captions", "Captions", "en");
+  track.mode = 'showing';
+  // Handle adding in the video cues
+  updateTracks();
 }
 
 export default function Player() {
@@ -33,7 +38,6 @@ export default function Player() {
     <div className='video-container flex center'>
       <div className='video-subcontainer'>
         <video id='video-player'></video>
-        <p className='lyric-container'>This is a test!</p>
       </div>
       {file && 
       <>
