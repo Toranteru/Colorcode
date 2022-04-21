@@ -11,8 +11,30 @@
 }
 
 .option {
-  font-size: 13px;
-  line-height: 18px;
+  position: relative;
   border: 1px solid gray;
+  
+  flex-direction: row;
+  gap: 6px;
   padding: 10px;
+}
+
+.index-container {
+  height: 100%;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.index {
+  font-size: 13px;
+  width: 24px;
+  height: 16px;
+  padding: 0 4px;
+}
+
+.lyric {
+  text-align: left;
+  
+  font-size: 12.5px;
+  padding: 4px;
 }

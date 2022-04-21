@@ -10,8 +10,14 @@ export default function Edit(props) {
     if (!translations) return;
     let options = translations.split('\n').map(translation => {
       return (
-        <div key={uuidv4()} className='option'>
-          {translation}
+        <div key={uuidv4()} className='option flex'>
+          <div className='index-container flex center'>
+            <input className='index' type='number'></input>
+            <input className='index' type='number'></input>
+          </div>
+          <div className='lyric flex center'>
+            {translation}
+          </div>
         </div>
       );
     })
