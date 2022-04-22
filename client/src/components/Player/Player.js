@@ -14,6 +14,9 @@ function initializeProgress() {
 
 function keyControls(e, dispatch) {
   if (!video.src) return;
+  let textCues = Array.from(JSON.parse(window.localStorage.getItem('Text Cues') || '[]'));
+  let index = parseInt(window.localStorage.getItem('User Index') || 0);
+
   switch (e.key.toUpperCase()) {
     case 'J':
       if (video.currentTime - playerInterval >= 0) video.currentTime -= playerInterval;
@@ -28,7 +31,21 @@ function keyControls(e, dispatch) {
       else video.currentTime = video.duration;
       updateProgress(video);
       break;
-    case ' ':
+    case 'S':
+      // Set the time for the current index
+      textCues[index] = {
+        ...textCues[index],
+        beginIndex: parseFloat(video.currentTime.toFixed(2))
+      }
+
+      window.localStorage.setItem('Text Cues', JSON.stringify(textCues));
+      window.localStorage.setItem('User Index', index + 1);
+      dispatch({ type: 'UPDATE_USER_INDEX', payload: index + 1 });
+      break;
+    case 'T':
+      if (!(index < textCues.length)) return;
+      video.currentTime = textCues[index].beginIndex;
+      updateProgress(video);
       break;
     default:
       break;
