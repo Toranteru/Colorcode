@@ -10,3 +10,11 @@ export function disableTabs(tabs) {
     tabs[i].classList.remove('active');
   }
 }
+
+export function setTab(className, index) {
+  let element = document.getElementById(index);
+  if (!element) return;
+
+  Array.from(document.getElementsByClassName(className)).forEach(option => option.classList.remove('active'));
+  element.classList.add('active');
+}

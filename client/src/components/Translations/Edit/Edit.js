@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
+import { setTab } from '../../../helpers/TabControls';
 
 import './Edit.css';
 
 export default function Edit(props) {
   let { translations } = props;
+
+  useEffect(() => {
+    setTab('option', parseInt(window.localStorage.getItem('User Index')));
+  }, [])
 
   function generateEditConfiguration() {
     if (!translations) return;
@@ -12,7 +18,10 @@ export default function Edit(props) {
     
     let options = translations.split('\n').map((translation, index) => {
       return (
-        <div key={uuidv4()} className='option flex'>
+        <div key={uuidv4()} id={index} className='option flex' onClick={() => {
+          window.localStorage.setItem('User Index', index);
+          setTab('option', index);
+        }}>
           <div className='index-container flex center'>
             <input className='index' type='number' defaultValue={textCues[index] ? textCues[index].beginIndex || 0 : 0} onChange={(e) => {
               textCues[index] = {

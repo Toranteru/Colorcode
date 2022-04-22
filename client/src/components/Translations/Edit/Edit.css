@@ -12,7 +12,7 @@
 
 .option {
   position: relative;
-  border: 1px solid gray;
+  border: 1px solid rgb(185, 185, 185);
   
   flex-direction: row;
   gap: 6px;
@@ -26,10 +26,12 @@
 }
 
 .index {
+  border: 1px solid rgb(185, 185, 185);
+
   font-size: 12px;
   width: 24px;
   height: 14px;
-  padding: 0 4px;
+  padding: 2px 6px;
 }
 
 .lyric {

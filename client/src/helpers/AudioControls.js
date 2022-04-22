@@ -22,16 +22,8 @@ export function toggleVideo(video, setIndex) {
   }
 }
 
-function updateIndex(video, setIndex) {
-  let index = -1;
-  let textCues = Array.from(JSON.parse(window.localStorage.getItem('Text Cues') || '[]'));
 
-  // Make sure the index is not out of bounds
-  while (index + 1 < textCues.length && textCues[index + 1].beginIndex && video.currentTime >= textCues[index + 1].beginIndex) index++;
-  setIndex(index);
-}
-
-function updateProgress(video) {
+export function updateProgress(video) {
   let slider = document.getElementById('video-slider');
   let button = document.getElementById('video-button');
   if (!slider || !button) return;
@@ -40,8 +32,17 @@ function updateProgress(video) {
   if (video.ended || video.paused) {
     // Type guard
     if (video.ended) toggleButton(button);
-    clearInterval(intervalID);
+    if (intervalID) clearInterval(intervalID);
   }
+}
+
+export function updateIndex(video, dispatch) {
+  let index = -1;
+  let textCues = Array.from(JSON.parse(window.localStorage.getItem('Text Cues') || '[]'));
+
+  // Make sure the index is not out of bounds
+  while (index + 1 < textCues.length && textCues[index + 1].beginIndex && video.currentTime >= textCues[index + 1].beginIndex) index++;
+  dispatch({ type: 'UPDATE_INDEX', payload: index });
 }
 
 function toggleButton(button) {
