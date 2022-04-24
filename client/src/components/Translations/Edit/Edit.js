@@ -23,8 +23,8 @@ export default function Edit(props) {
     let options = translations.split('\n').map((translation, index) => {
       return (
         <div key={uuidv4()} id={index} className='option flex' onClick={() => {
-          window.localStorage.setItem('User Index', index);
           dispatch({ type: 'UPDATE_USER_INDEX', payload: index });
+          window.localStorage.setItem('User Index', index);
         }}>
           <div className='index-container flex center'>
             <input className='index' type='number' defaultValue={textCues[index] ? textCues[index].beginIndex || 0 : 0} onChange={(e) => {

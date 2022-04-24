@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { toggleVideo, updateIndex, updateProgress } from '../../helpers/AudioControls';
@@ -52,15 +52,30 @@ function keyControls(e, dispatch) {
   };
 }
 
+function removeVolumeIcons(volume, setMuteStatus) {
+  let volumeIcons = ['fa-volume-xmark', 'fa-volume-low', 'fa-volume-high'];
+  let element = document.getElementById('volume-icon');
+  if (!element) return;
+  volumeIcons.forEach(icon => element.classList.remove(icon));
+
+  if (volume <= 0) {
+    element.classList.add('fa-volume-xmark');
+    setMuteStatus(true);
+  }
+  else if (volume <= 0.4) element.classList.add('fa-volume-low');
+  else element.classList.add('fa-volume-high');
+}
+
 export default function Player() {
   const { file, index } = useSelector(state => state.videoSlice);
+  const [muteStatus, setMuteStatus] = useState(window.localStorage.getItem('Mute Status'));
   const dispatch = useDispatch();
 
   let localTranslation = window.localStorage.getItem('Translations').split('\n');
 
   useEffect(() => {
     window.addEventListener('keypress', (e) => keyControls(e, dispatch));
-
+    
     // Cleanup function
     return () => {
       window.removeEventListener('keypress', (e) => keyControls(e, dispatch));
@@ -95,6 +110,10 @@ export default function Player() {
     subtitle.textContent = localTranslation[index];
   }, [index])
 
+  useEffect(() => {
+    window.localStorage.setItem('Mute Status', muteStatus);
+  }, [muteStatus])
+
   return (
     <div className='video-container flex center'>
       <div className='video-subcontainer'>
@@ -110,11 +129,23 @@ export default function Player() {
             updateIndex(video, dispatch);
           }}></input>
           <i id='video-button' className="fa-solid fa-play fa-width fa-xl pointer" onClick={() => toggleVideo(video, dispatch)}></i>
-          <input id='volume-slider' className='slider' type='range' min='0' max='100' defaultValue={window.localStorage.getItem('Volume') || '20'} onInput={(e) => {
-            if (!video) return;
-            video.volume = e.target.value / 100;
-            window.localStorage.setItem('Volume', e.target.value);
-          }}></input>
+          <div id='volume-container' className='flex center'>
+            <i id='volume-icon' className="fa-solid fa-volume-low fa-width fa-xl pointer" onClick={() => {
+              // Mute video on click
+              let currentVolume = muteStatus ? parseInt(window.localStorage.getItem('Volume')) : 0;
+              removeVolumeIcons(currentVolume / 100, setMuteStatus);
+              video.volume = currentVolume / 100;
+              document.getElementById('volume-slider').value = currentVolume;
+
+              setMuteStatus(!muteStatus);
+            }}></i>
+            <input id='volume-slider' className='slider' type='range' min='0' max='100' defaultValue={window.localStorage.getItem('Volume') || '20'} onInput={(e) => {
+              if (!video) return;
+              video.volume = e.target.value / 100;
+              window.localStorage.setItem('Volume', e.target.value);
+              removeVolumeIcons(video.volume, setMuteStatus);
+            }}></input>
+          </div>
         </div>
       </>}
     </div>
