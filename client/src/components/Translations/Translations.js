@@ -7,19 +7,23 @@ import './Translations.css';
 let sub_menu_tabs = document.getElementsByClassName('sub-menu-tab');
 
 export default function Translations() {
-  const [activeTranslateTab, setActiveTranslateTab] = useState('Import');
+  const [activeTranslateTab, setActiveTranslateTab] = useState(window.localStorage.getItem('Translate Tab') || 'Translations');
   const [translations, setTranslations] = useState('');
 
   useEffect(() => {
     // Fetch information from local storage
     let translateTab = window.localStorage.getItem('Translate Tab');
-    let translation = window.localStorage.getItem('Translations');
+    let translation = window.localStorage.getItem(translateTab);
 
     if (translateTab) setActiveTranslateTab(translateTab);
     if (translation) setTranslations(translation);
   }, []);
 
   useEffect(() => {
+    if (activeTranslateTab !== 'Edit') {
+      setTranslations(window.localStorage.getItem(activeTranslateTab));
+      window.localStorage.setItem('Lyric Tab', activeTranslateTab);
+    }
     disableTabs(sub_menu_tabs);
     activateTab(activeTranslateTab);
     window.localStorage.setItem('Translate Tab', activeTranslateTab);
@@ -33,13 +37,24 @@ export default function Translations() {
 
 function generateSubMenuContent(menuTab) {
   switch (menuTab) {
-    case 'Import':
+    case 'Translations':
       return (
         <textarea
           id='translation-container'
           defaultValue={translations}
           onChange={(e) => {
             window.localStorage.setItem('Translations', e.target.value);
+            setTranslations(e.target.value);
+          }}
+        ></textarea>
+      );
+    case 'Romanization':
+      return (
+        <textarea
+          id='translation-container'
+          defaultValue={translations}
+          onChange={(e) => {
+            window.localStorage.setItem('Romanization', e.target.value);
             setTranslations(e.target.value);
           }}
         ></textarea>
@@ -58,7 +73,8 @@ function generateSubMenuContent(menuTab) {
   return (
     <>
       <div className='sub-sidebar-header flex'>
-        <p id='Import' className='sub-menu-tab pointer' onClick={() => setActiveTranslateTab('Import')}>Import</p>
+        <p id='Translations' className='sub-menu-tab pointer' onClick={() => setActiveTranslateTab('Translations')}>Translations</p>
+        <p id='Romanization' className='sub-menu-tab pointer' onClick={() => setActiveTranslateTab('Romanization')}>Romanization</p>
         <p id='Edit' className='sub-menu-tab pointer' onClick={() => setActiveTranslateTab('Edit')}>Edit</p>
       </div>
       <div className='sub-sidebar-content flex center'>

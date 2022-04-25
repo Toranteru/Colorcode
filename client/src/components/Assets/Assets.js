@@ -7,6 +7,7 @@ export default function Assets() {
     <>
       <input className='hidden' id='file' type='file'
         onChange={(e) => {
+          console.log(e.target.files[0]);
           dispatch({ type: 'UPDATE_VIDEO', payload: e.target.files[0] });
         }}
       ></input>

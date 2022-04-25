@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { toggleVideo, updateIndex, updateProgress } from '../../helpers/AudioControls';
+import { removeMultiple, toggleMultiple } from '../../helpers/Generic';
 import './Player.css';
 
 let video, slider;
@@ -10,6 +11,8 @@ let playerInterval = 2;
 function initializeProgress() {
   if (!slider || !video) return;
   slider.setAttribute('max', Math.round(video.duration));
+  slider.value = 0;
+  video.currentTime = 0;
 }
 
 function keyControls(e, dispatch) {
@@ -47,6 +50,17 @@ function keyControls(e, dispatch) {
       video.currentTime = textCues[index].beginIndex;
       updateProgress(video);
       break;
+    case 'R':
+      initializeProgress();
+      break;
+    case 'F':
+      // Toggle full screen
+      let videoContainer = document.getElementById('video-container');
+      let sidebarContainer = document.getElementById('sidebar');
+      if (!videoContainer || !sidebarContainer) return;
+      toggleMultiple(videoContainer, ['video-mw', 'video-fw']);
+      sidebarContainer.classList.toggle('hidden');
+      break;
     default:
       break;
   };
@@ -56,7 +70,7 @@ function removeVolumeIcons(volume, setMuteStatus) {
   let volumeIcons = ['fa-volume-xmark', 'fa-volume-low', 'fa-volume-high'];
   let element = document.getElementById('volume-icon');
   if (!element) return;
-  volumeIcons.forEach(icon => element.classList.remove(icon));
+  removeMultiple(element, volumeIcons);
 
   if (volume <= 0) {
     element.classList.add('fa-volume-xmark');
@@ -68,10 +82,11 @@ function removeVolumeIcons(volume, setMuteStatus) {
 
 export default function Player() {
   const { file, index } = useSelector(state => state.videoSlice);
-  const [muteStatus, setMuteStatus] = useState(window.localStorage.getItem('Mute Status'));
+  const [muteStatus, setMuteStatus] = useState(false);
   const dispatch = useDispatch();
 
-  let localTranslation = window.localStorage.getItem('Translations').split('\n');
+  let activeTab = window.localStorage.getItem('Lyric Tab') || 'Translation';
+  let localTranslation = (window.localStorage.getItem(activeTab) || '').split('\n');
 
   useEffect(() => {
     window.addEventListener('keypress', (e) => keyControls(e, dispatch));
@@ -115,7 +130,7 @@ export default function Player() {
   }, [muteStatus])
 
   return (
-    <div className='video-container flex center'>
+    <div id='video-container' className='flex center video-mw'>
       <div className='video-subcontainer'>
         <video id='video-player'></video>
         <p id='subtitle' className='lyric-container hidden'>No video has been loaded yet.</p>
@@ -132,7 +147,7 @@ export default function Player() {
           <div id='volume-container' className='flex center'>
             <i id='volume-icon' className="fa-solid fa-volume-low fa-width fa-xl pointer" onClick={() => {
               // Mute video on click
-              let currentVolume = muteStatus ? parseInt(window.localStorage.getItem('Volume')) : 0;
+              let currentVolume = muteStatus ? parseInt(window.localStorage.getItem('Volume')) || 20 : 0;
               removeVolumeIcons(currentVolume / 100, setMuteStatus);
               video.volume = currentVolume / 100;
               document.getElementById('volume-slider').value = currentVolume;

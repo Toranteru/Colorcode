@@ -17,7 +17,12 @@ export default function Edit(props) {
   }, [userIndex]);
 
   function generateEditConfiguration() {
-    if (!translations) return;
+    if (!translations) translations = window.localStorage.getItem(window.localStorage.getItem('Lyric Tab'));
+    if (translations.length <= 0) {
+      return (
+        <div className='error flex center lyric'>No translations have been recorded into the program!</div>
+      );
+    }
 
     let textCues = Array.from(JSON.parse(window.localStorage.getItem('Text Cues') || '[]'));
     let options = translations.split('\n').map((translation, index) => {

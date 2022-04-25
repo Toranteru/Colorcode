@@ -9,7 +9,7 @@
 html, body {
   height: 100%;
   overflow: hidden;
-  background-color: #7C5B5B;
+  background-color: #85666695;
 }
 
 input[type=number] {
@@ -58,8 +58,8 @@ input[type=number]::-webkit-outer-spin-button {
 
 .hidden {
   visibility: hidden;
+  opacity: 0;
   width: 0;
-  height: 0;
 }
 
 .pointer {

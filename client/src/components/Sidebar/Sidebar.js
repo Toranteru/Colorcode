@@ -15,7 +15,7 @@ function generateMenuContent(menuTab) {
       return (
         <Assets />
       );
-    case 'Translations':
+    case 'Lyrics':
       return (
         <Translations />
       );
@@ -46,11 +46,11 @@ export default function Sidebar() {
   }, [activeMenuTab]);
 
   return (
-    <div className='sidebar flex center'>
+    <div id='sidebar' className='flex center'>
       <div className='sidebar-container'>
         <div className='sidebar-header flex'>
           <p id='Assets' className='menu-tab pointer' onClick={() => setActiveMenuTab('Assets')}>Assets</p>
-          <p id='Translations' className='menu-tab pointer' onClick={() => setActiveMenuTab('Translations')}>Translations</p>
+          <p id='Lyrics' className='menu-tab pointer' onClick={() => setActiveMenuTab('Lyrics')}>Lyrics</p>
           <p id='Presets' className='menu-tab pointer' onClick={() => setActiveMenuTab('Presets')}>Presets</p>
         </div>
         <div className='sidebar-content flex center'>
