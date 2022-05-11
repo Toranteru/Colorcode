@@ -1,3 +1,5 @@
+import { toggleMultiple } from "./Generic";
+
 let intervalID;
 let timingInterval = 300;
 
@@ -45,7 +47,6 @@ export function updateIndex(video, dispatch) {
   dispatch({ type: 'UPDATE_INDEX', payload: index });
 }
 
-function toggleButton(button) {
-  button.classList.toggle('fa-play');
-  button.classList.toggle('fa-pause');
+export function toggleButton(button) {
+  toggleMultiple(button, ['fa-play', 'fa-pause']);
 }

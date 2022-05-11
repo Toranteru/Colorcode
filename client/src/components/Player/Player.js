@@ -5,7 +5,7 @@ import { toggleVideo, updateIndex, updateProgress } from '../../helpers/AudioCon
 import { removeMultiple, toggleMultiple } from '../../helpers/Generic';
 import './Player.css';
 
-let video, slider;
+let video, videoButton, slider;
 let playerInterval = 2;
 
 function initializeProgress() {
@@ -56,8 +56,11 @@ function keyControls(e, dispatch) {
     case 'F':
       // Toggle full screen
       let videoContainer = document.getElementById('video-container');
+      let videoSubContainer = document.getElementById('video-subcontainer');
+      let audioContainer = document.getElementById('audio-controls');
       let sidebarContainer = document.getElementById('sidebar');
-      if (!videoContainer || !sidebarContainer) return;
+
+      if (!videoContainer || !videoSubContainer || !sidebarContainer || !audioContainer) return;
       toggleMultiple(videoContainer, ['video-mw', 'video-fw']);
       sidebarContainer.classList.toggle('hidden');
       break;
@@ -99,12 +102,16 @@ export default function Player() {
 
   useEffect(() => {
     video = document.getElementById('video-player');
+    videoButton = document.getElementById('video-button');
     slider = document.getElementById('video-slider');
-    if (!video || !file) return;
+    if (!video || !videoButton || !file) return;
 
     video.src = URL.createObjectURL(file);
     video.volume = window.localStorage.getItem('Volume') / 100 || 0.2;
     video.addEventListener('loadedmetadata', initializeProgress);
+
+    videoButton.classList.add('fa-play');
+    videoButton.classList.remove('fa-pause');
 
     // Cleanup function
     return () => {
@@ -131,35 +138,39 @@ export default function Player() {
 
   return (
     <div id='video-container' className='flex center video-mw'>
-      <div className='video-subcontainer'>
+      <div id='video-subcontainer' className='video-mh center'>
         <video id='video-player'></video>
-        <p id='subtitle' className='lyric-container hidden'>No video has been loaded yet.</p>
+        <div className='lyric-container flex center'>
+          <p id='subtitle' className='lyric-subcontainer hidden'>No video has been loaded yet.</p>
+        </div>
       </div>
       {file && 
       <>
-        <div className='audio-controls'>
+        <div id='audio-controls'>
           <input id='video-slider' className='slider' type='range' min='0' defaultValue='0' onInput={(e) => {
             if (!video) return;
             video.currentTime = e.target.value;
             updateIndex(video, dispatch);
           }}></input>
-          <i id='video-button' className="fa-solid fa-play fa-width fa-xl pointer" onClick={() => toggleVideo(video, dispatch)}></i>
-          <div id='volume-container' className='flex center'>
-            <i id='volume-icon' className="fa-solid fa-volume-low fa-width fa-xl pointer" onClick={() => {
-              // Mute video on click
-              let currentVolume = muteStatus ? parseInt(window.localStorage.getItem('Volume')) || 20 : 0;
-              removeVolumeIcons(currentVolume / 100, setMuteStatus);
-              video.volume = currentVolume / 100;
-              document.getElementById('volume-slider').value = currentVolume;
+          <div className='container flex center'>
+            <i id='video-button' className="fa-solid fa-play fa-width fa-xl pointer" onClick={() => toggleVideo(video, dispatch)}></i>
+            <div id='volume-container' className='flex center'>
+              <i id='volume-icon' className="fa-solid fa-volume-low fa-width fa-xl pointer" onClick={() => {
+                // Mute video on click
+                let currentVolume = muteStatus ? parseInt(window.localStorage.getItem('Volume')) || 20 : 0;
+                removeVolumeIcons(currentVolume / 100, setMuteStatus);
+                video.volume = currentVolume / 100;
+                document.getElementById('volume-slider').value = currentVolume;
 
-              setMuteStatus(!muteStatus);
-            }}></i>
-            <input id='volume-slider' className='slider' type='range' min='0' max='100' defaultValue={window.localStorage.getItem('Volume') || '20'} onInput={(e) => {
-              if (!video) return;
-              video.volume = e.target.value / 100;
-              window.localStorage.setItem('Volume', e.target.value);
-              removeVolumeIcons(video.volume, setMuteStatus);
-            }}></input>
+                setMuteStatus(!muteStatus);
+              }}></i>
+              <input id='volume-slider' className='slider' type='range' min='0' max='100' defaultValue={window.localStorage.getItem('Volume') || '20'} onInput={(e) => {
+                if (!video) return;
+                video.volume = e.target.value / 100;
+                window.localStorage.setItem('Volume', e.target.value);
+                removeVolumeIcons(video.volume, setMuteStatus);
+              }}></input>
+            </div>
           </div>
         </div>
       </>}
