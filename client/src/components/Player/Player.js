@@ -17,9 +17,11 @@ function initializeProgress() {
 
 function keyControls(e, dispatch) {
   if (!video.src) return;
+  let translateTab = window.localStorage.getItem('Translate Tab');
+  if (translateTab === 'Translations' || translateTab === 'Romanization') return;
+
   let textCues = Array.from(JSON.parse(window.localStorage.getItem('Text Cues') || '[]'));
   let index = parseInt(window.localStorage.getItem('User Index') || 0);
-
   switch (e.key.toUpperCase()) {
     case 'J':
       if (video.currentTime - playerInterval >= 0) video.currentTime -= playerInterval;
